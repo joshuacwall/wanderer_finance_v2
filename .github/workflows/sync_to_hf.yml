@@ -1,7 +1,7 @@
 name: Sync to Hugging Face hub
 on:
   workflow_run:
-    workflows: ["Run Identify Script"]
+    workflows: ["Run Identify Script"] # Updated workflow name
     types:
       - completed
   push:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch_depth: 0
+          fetch-depth: 0
           lfs: true
       - name: Push to hub
         env:

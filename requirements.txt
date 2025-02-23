@@ -1,0 +1,15 @@
+yfinance
+langchain-community
+langchain-core
+pandas
+gspread
+oauth2client
+python-dotenv
+datetime
+gradio
+jupyter
+ipykernel
+holidays
+plotly
+litellm
+langgraph

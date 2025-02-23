@@ -11,7 +11,7 @@ DATABASE="analysis_results.db"
 TABLE="raw_data"
 
 if __name__ == "__main__":
-    if not is_us_market_open():
+    if is_us_market_open():
         results_df = analyze_active_stocks()
 
         if not results_df.empty:

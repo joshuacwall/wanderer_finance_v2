@@ -1,7 +1,7 @@
 name: Sync to Hugging Face hub
 on:
   workflow_run:
-    workflows: ["Run Identify Script"] # Updated workflow name
+    workflows: ["Run Identify Script","Run Evaluate Script"] # Updated workflow name
     types:
       - completed
   push:

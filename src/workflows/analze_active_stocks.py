@@ -21,8 +21,8 @@ def analyze_active_stocks(model = "groq/deepseek-r1-distill-llama-70b", temperat
     logger = logging.getLogger(__name__)
 
     # Get active tickers
-    #tickers = AlphaVantageClient().get_most_active_tickers()  # Assuming this function is defined elsewhere
-    tickers =["NVDA"]
+    tickers = AlphaVantageClient().get_most_active_tickers()  # Assuming this function is defined elsewhere
+    #tickers =["NVDA"]
     current_date = datetime.today().date()
     if not tickers:
         logger.error("Failed to retrieve tickers")

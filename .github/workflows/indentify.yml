@@ -1,7 +1,7 @@
 name: Run Identify Script
 on:
   schedule:
-    - cron: '20 12 * * *' # Runs at 7:30 PM UTC (2:30 PM CT)
+    - cron: '20 12 * * *' # Runs at 12:20 PM UTC (6:20 AM CT)
   workflow_dispatch:
 
 jobs:
@@ -32,7 +32,12 @@ jobs:
           LANGSMITH_PROJECT: "wanderer_finance_v2"
         run: python identify.py
 
+      - name: Check for changes
+        id: check_changes
+        run: echo "::set-output name=changed::$(git status --porcelain | wc -l | tr -d ' ')"
+
       - name: Commit database changes
+        if: steps.check_changes.outputs.changed != '0'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -40,5 +45,6 @@ jobs:
           git commit -m "Update SQLite database with new Identify"
 
       - name: Push database changes
+        if: steps.check_changes.outputs.changed != '0'
         run: |
           git push origin ${{ github.ref }}

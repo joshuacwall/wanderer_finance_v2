@@ -15,8 +15,6 @@ SELECT
     count(ticker) as value
 FROM
     raw_data
-WHERE
-    (evaluation is not NULL OR percent_change is not NULL)
 GROUP BY
     ticker;
 """

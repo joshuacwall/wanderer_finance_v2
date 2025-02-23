@@ -1,0 +1,34 @@
+name: Run Python Script with Secrets
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies (if any)
+        run: pip install -r requirements.txt
+
+      - name: Run Python script with secrets
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          NEWSDATA_API: ${{ secrets.NEWSDATA_API }}
+          ALPHA_VANTAGE_API: ${{ secrets.ALPHA_VANTAGE_API }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LANGSMITH_TRACING: true
+          LANGSMITH_ENDPOINT: "https://api.smith.langchain.com"
+          LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+          LANGSMITH_PROJECT: "wanderer_finance_v2"
+        run: python identify.py

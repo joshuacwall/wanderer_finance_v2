@@ -17,6 +17,7 @@ def create_tab():
 updates ="""
 ## Latest Updates
 
+* **2025-02-23:** Set-up Identify triggers in github
 * **2025-02-23:** Improve DB management
 * **2025-02-16:** Langsmith tracing set up and templates moved
 * **2025-02-09:** Gradio UI

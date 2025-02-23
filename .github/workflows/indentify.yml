@@ -1,5 +1,7 @@
 name: Run Python Script with Secrets
 on:
+  schedule:
+    - cron: '30 12 * * *'
   push:
     branches:
       - main
@@ -32,3 +34,16 @@ jobs:
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
           LANGSMITH_PROJECT: "wanderer_finance_v2"
         run: python identify.py
+
+      - name: Commit database changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update SQLite database with new Identify"
+
+      - name: Push database changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

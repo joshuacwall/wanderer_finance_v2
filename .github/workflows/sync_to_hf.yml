@@ -1,49 +1,20 @@
-name: Run Python Script with Secrets
+name: Sync to Hugging Face hub
 on:
-  schedule:
-    - cron: '30 12 * * *'
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  run_script:
+  sync-to-hub:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v3
         with:
-          python-version: '3.x'
-
-      - name: Install dependencies (if any)
-        run: pip install -r requirements.txt
-
-      - name: Run Python script with secrets
+          fetch-depth: 0
+          lfs: true
+      - name: Push to hub
         env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          NEWSDATA_API: ${{ secrets.NEWSDATA_API }}
-          ALPHA_VANTAGE_API: ${{ secrets.ALPHA_VANTAGE_API }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          LANGSMITH_TRACING: true
-          LANGSMITH_ENDPOINT: "https://api.smith.langchain.com"
-          LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
-          LANGSMITH_PROJECT: "wanderer_finance_v2"
-        run: python identify.py
-
-      - name: Commit database changes
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Update SQLite database with new Identify"
-
-      - name: Push database changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          git remote set-url origin https://wandererai:$HF_TOKEN@huggingface.co/spaces/wandererai/Wanderer_AI_Finance
+          git push origin main -u

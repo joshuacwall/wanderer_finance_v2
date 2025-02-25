@@ -6,7 +6,8 @@ from datetime import datetime
 
 current_most_active_query = """
 SELECT
-    ticker
+    ticker,
+    action
 FROM
     raw_data
 WHERE

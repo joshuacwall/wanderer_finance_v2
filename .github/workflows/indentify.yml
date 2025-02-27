@@ -15,10 +15,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.11' # Change to your desired version
 
       - name: Install dependencies (if any)
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Debug python environment
+        run: |
+          python --version
+          pip list
 
       - name: Run Python script with secrets
         env:

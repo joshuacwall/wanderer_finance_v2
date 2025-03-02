@@ -9,12 +9,12 @@ SELECT
     ticker,
     action
 FROM
-    raw_data
+    data
 WHERE
-    current_date = (SELECT MAX(current_date) FROM raw_data);
+    current_date = (SELECT MAX(current_date) FROM data);
 """
 
-client = SQLiteClient(db_path='analysis_results.db')
+client = SQLiteClient(db_path='main.db')
 
 def create_tab():
     with gr.TabItem("Current Picks"):
@@ -77,7 +77,7 @@ def create_tab():
                 price_display = f"${current_price:.2f}" if isinstance(current_price, (float, int)) else str(current_price)
                 
                 # Get explanation and action
-                additional_data_query = f"SELECT explanation, action, current_date FROM raw_data WHERE ticker = '{selected_ticker}' AND current_date = (SELECT MAX(current_date) FROM raw_data)"  # Added current_date filter
+                additional_data_query = f"SELECT explanation, action, current_date FROM data WHERE ticker = '{selected_ticker}' AND current_date = (SELECT MAX(current_date) FROM data)"  # Added current_date filter
                 additional_data = client.query(additional_data_query)
                 
                 if isinstance(additional_data, pd.DataFrame):

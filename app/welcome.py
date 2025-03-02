@@ -17,6 +17,7 @@ def create_tab():
 updates ="""
 ## Latest Updates
 
+* **2025-03-02:** Database Migration/Evaluation Script
 * **2025-02-23:** Set-up Identify triggers in github
 * **2025-02-23:** Improve DB management
 * **2025-02-16:** Langsmith tracing set up and templates moved
@@ -46,6 +47,8 @@ Here's how it works:
 
 4. **How to use:**  Simple. If the LLM Action is "Buy", the purchase the stock. If the LLM Action is "HOLD", then don't take any action.
     * Suggestion:  Set as daily limit (lets say $50), distribute that amount evenly amongst stocks LLM suggests to "BUY". Sell before close.
+
+5. **Definition of "WIN":**  A "WIN" is considered any time a BUY performs better than the S&P500 or a HOLD performs worse than the S&P500
 
 * **Key Principles:**
     * Intraday Focus:  All positions are closed before the end of the trading day.

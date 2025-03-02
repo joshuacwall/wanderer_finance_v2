@@ -39,3 +39,43 @@ def get_current_day_metrics(ticker):
     except Exception as e:
         print(f"Error retrieving data for {ticker}: {e}")
         return None
+    
+def get_sp500_percent_change(date):
+    """
+    Calculates the percent change in the S&P 500 between the given date and the last market open day before it.
+
+    Args:
+        date (str or pandas.Timestamp): The date for which to calculate the S&P 500 percent change.
+
+    Returns:
+        float or None: The percent change in the S&P 500, or None if data retrieval fails.
+    """
+    try:
+        date = pd.to_datetime(date)  # Ensure date is a pandas Timestamp
+
+        sp500 = yf.Ticker("^GSPC")
+
+        # Get S&P 500 data for the given date
+        current_day_data = sp500.history(start=date, end=date + pd.Timedelta(days=1))
+
+        if current_day_data.empty:
+            print(f"No S&P 500 data found for {date.strftime('%Y-%m-%d')}.")
+            return None
+
+        current_close = current_day_data['Close'].iloc[0]
+
+        # Find the last market open day before the given date
+        previous_date = date - pd.Timedelta(days=1)
+        while True:
+            previous_day_data = sp500.history(start=previous_date, end=previous_date + pd.Timedelta(days=1))
+            if not previous_day_data.empty:
+                previous_close = previous_day_data['Close'].iloc[0]
+                break
+            previous_date -= pd.Timedelta(days=1)
+
+        percent_change = ((current_close - previous_close) / previous_close) * 100
+        return percent_change
+
+    except Exception as e:
+        print(f"Error retrieving S&P 500 data: {e}")
+        return None

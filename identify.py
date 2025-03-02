@@ -7,8 +7,8 @@ load_dotenv()
 
 MODEL = "groq/deepseek-r1-distill-llama-70b"
 TEMPERATURE = 0.1
-DATABASE="analysis_results.db"
-TABLE="raw_data"
+DATABASE="main.db"
+TABLE="data"
 
 if __name__ == "__main__":
     if is_us_market_open():

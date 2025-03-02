@@ -106,10 +106,7 @@ def analyze_active_stocks(model = "groq/deepseek-r1-distill-llama-70b", temperat
                 'explanation': explanation,
                 'current_date': current_date,
                 'article_links_and_sentiments': str(article_links_and_sentiments),
-                "previous_close": previous_close,
-                "current_close" : None,
-                "percent_change" : None,
-                "evaluation" : None
+                "previous_close": previous_close
             })
 
         except Exception as e:

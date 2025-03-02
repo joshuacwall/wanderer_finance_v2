@@ -14,14 +14,14 @@ SELECT
     current_date as date,
     count(ticker) as value
 FROM
-    raw_data
+    data
 WHERE
     (evaluation is not NULL OR percent_change is not NULL)
 GROUP BY
     ticker;
 """
 
-client = SQLiteClient("analysis_results.db")
+client = SQLiteClient("main.db")
 
 def get_sp500_return(start_date, end_date):
     """

@@ -19,7 +19,9 @@ FROM
 WHERE
     (evaluation is not NULL OR percent_change is not NULL)
 GROUP BY
-    ticker,record_date;
+    ticker,record_date
+ORDER BY
+    record_date desc;
 """
 
 client = SQLiteClient("main.db")
@@ -89,9 +91,8 @@ def create_tab():
             try:
                 results = client.query(quadrant_query)
                 df = pd.DataFrame(results) if isinstance(results, list) else results
-
                 # Filter for "buy" actions
-                buy_df = df[df['action'] == 'buy']
+                buy_df = df[df['action'] == 'BUY']
 
                 # Calculate total percent change for buy actions only
                 total_percent_change = buy_df['percent_change'].astype(float).sum()

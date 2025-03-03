@@ -6,12 +6,13 @@ from datetime import datetime
 
 current_most_active_query = """
 SELECT
-    ticker,
-    action
+    ticker
 FROM
     data
 WHERE
-    current_date = (SELECT MAX(current_date) FROM data);
+    record_date = (SELECT MAX(record_date) FROM data)
+AND
+    action = "BUY";
 """
 
 client = SQLiteClient(db_path='main.db')
@@ -34,7 +35,7 @@ def create_tab():
                         else:
                             raise TypeError("Unsupported result type from query_database")
                         
-                        if not df.empty and 'current_date' in df.columns:
+                        if not df.empty and 'record_date' in df.columns:
                             return df
                         else:
                             return df
@@ -77,7 +78,7 @@ def create_tab():
                 price_display = f"${current_price:.2f}" if isinstance(current_price, (float, int)) else str(current_price)
                 
                 # Get explanation and action
-                additional_data_query = f"SELECT explanation, action, current_date FROM data WHERE ticker = '{selected_ticker}' AND current_date = (SELECT MAX(current_date) FROM data)"  # Added current_date filter
+                additional_data_query = f"SELECT explanation, action, record_date FROM data WHERE ticker = '{selected_ticker}' AND record_date = (SELECT MAX(record_date) FROM data)"  # Added current_date filter
                 additional_data = client.query(additional_data_query)
                 
                 if isinstance(additional_data, pd.DataFrame):
@@ -91,7 +92,7 @@ def create_tab():
                 action_text = ""
                 date_text = ""
                 if not df_additional.empty:
-                    date_text = df_additional['current_date'].iloc[0]
+                    date_text = df_additional['record_date'].iloc[0]
                     explanation_text = df_additional['explanation'].iloc[0]
                     action_text = df_additional['action'].iloc[0]
                 else:

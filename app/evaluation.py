@@ -9,16 +9,17 @@ from datetime import datetime, timedelta
 quadrant_query = """
 SELECT
     ticker,
+    action,
     evaluation,
     percent_change,
-    current_date as date,
+    record_date as date,
     count(ticker) as value
 FROM
     data
 WHERE
     (evaluation is not NULL OR percent_change is not NULL)
 GROUP BY
-    ticker;
+    ticker,record_date;
 """
 
 client = SQLiteClient("main.db")
@@ -74,7 +75,7 @@ def get_sp500_return(start_date, end_date):
         return "Error fetching S&P 500 data"
 
 def create_tab():
-    with gr.TabItem("Evaluation"):
+    with gr.TabItem("Evaluation (In Progress, data may not be accurate)"):
         with gr.Row():
             refresh_button = gr.Button("Refresh Data")
         with gr.Row():
@@ -88,13 +89,16 @@ def create_tab():
             try:
                 results = client.query(quadrant_query)
                 df = pd.DataFrame(results) if isinstance(results, list) else results
-                
-                # Calculate total percent change
-                total_percent_change = df['percent_change'].astype(float).sum()
-                
+
+                # Filter for "buy" actions
+                buy_df = df[df['action'] == 'buy']
+
+                # Calculate total percent change for buy actions only
+                total_percent_change = buy_df['percent_change'].astype(float).sum()
+
                 # Create pie chart
                 fig = px.pie(df, values='value', names='evaluation', title='Distribution by evaluation')
-                
+
                 # Prepare table data
                 table_df = df.drop('value', axis=1)
 
@@ -102,20 +106,20 @@ def create_tab():
                 dates = pd.to_datetime(df['date'])
                 min_date = dates.min().strftime('%Y-%m-%d')
                 max_date = dates.max().strftime('%Y-%m-%d')
-                
+
                 # Update plot title
                 fig.update_layout(title_text=f'Distribution by evaluation ({min_date} to {max_date})')
-                
+
                 # Get S&P 500 return using optimized function
                 sp500_change_str = get_sp500_return(min_date, max_date)
-                
+
                 return (
                     table_df,
                     fig,
                     f"{total_percent_change:.2f}%",
                     sp500_change_str
                 )
-                
+
             except Exception as e:
                 print(f"Error: {e}")
                 return pd.DataFrame({"Error": [str(e)]}), None, "Error", "Error"

@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import gradio as gr
-from app import current_picks, welcome, evaluation
+from app import current_picks, welcome, evaluation,current_passes
 load_dotenv() 
 
 def create_gradio_interface():
@@ -8,6 +8,7 @@ def create_gradio_interface():
         with gr.Tabs():
             welcome.create_tab(),
             current_picks.create_tab(),
+            current_passes.create_tab(),
             evaluation.create_tab(),
     return demo
 

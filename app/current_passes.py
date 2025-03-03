@@ -12,18 +12,18 @@ FROM
 WHERE
     record_date = (SELECT MAX(record_date) FROM data)
 AND
-    action = "BUY";
+    action = "HOLD";
 """
 
 client = SQLiteClient(db_path='main.db')
 
 def create_tab():
-    with gr.TabItem("Current Stock Picks"):
+    with gr.TabItem("Current Stock Passed"):
         with gr.Row():
             # Left column (1/3 width)
             with gr.Column(scale=1):
                 refresh_button = gr.Button("Refresh Data")
-                output_table = gr.DataFrame(label="Most Recent Active Stocks")
+                output_table = gr.DataFrame(label="Stocks Passed On")
                 
                 def refresh_table():
                     try:

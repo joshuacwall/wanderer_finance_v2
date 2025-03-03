@@ -1,10 +1,10 @@
 from src.clients.sqllite import SQLiteClient
 query = """
 SELECT *
-FROM raw_data
+FROM data
 """
 
-db = "analysis_results.db"
+db = "main.db"
 
 client = SQLiteClient(db)
 

@@ -43,7 +43,7 @@ if __name__ == "__main__":
             'ticker': Column('ticker', String),
             'action': Column('action', String),
             'explanation': Column('explanation', String),
-            'current_date': Column('current_date', Date),
+            'record_date': Column('record_date', Date),
             'article_links_and_sentiments': Column('article_links_and_sentiments', String),
             "previous_close": Column("previous_close", Float),
             "current_close": Column("current_close", Float),

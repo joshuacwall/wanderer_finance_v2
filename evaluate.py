@@ -30,7 +30,7 @@ def evaluate():
         for idx, row in df.iterrows():
             try:
                 ticker: str = row['ticker']
-                date: str = row['current_date']
+                date: str = row['record_date']
                 id_val: int = row['id']
                 previous_close: float = row['previous_close']
                 action: str = row['action']

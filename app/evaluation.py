@@ -77,7 +77,7 @@ def get_sp500_return(start_date, end_date):
         return "Error fetching S&P 500 data"
 
 def create_tab():
-    with gr.TabItem("Evaluation (In Progress, data may not be accurate)"):
+    with gr.TabItem("Evaluation"):
         with gr.Row():
             refresh_button = gr.Button("Refresh Data")
         with gr.Row():
